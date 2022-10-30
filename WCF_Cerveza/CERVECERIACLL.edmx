@@ -1,0 +1,801 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="CERVECERIA_CLLModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="TB_Bitacora">
+          <Key>
+            <PropertyRef Name="Id_bitacora" />
+          </Key>
+          <Property Name="Id_bitacora" Type="char" MaxLength="5" Nullable="false" />
+          <Property Name="Id_empleado" Type="char" MaxLength="3" />
+          <Property Name="Id_receta" Type="char" MaxLength="4" />
+          <Property Name="fecha_inicio" Type="date" />
+          <Property Name="litros_producidos" Type="int" Nullable="false" />
+          <Property Name="tiempo_real" Type="varchar" MaxLength="15" />
+          <Property Name="inicio_fermentacion" Type="datetime" />
+          <Property Name="fin_fermentacion" Type="datetime" />
+          <Property Name="FechaIni_desc" Type="datetime" />
+          <Property Name="InicioMaduracion_frio" Type="datetime" />
+          <Property Name="FinMaduracion_frio" Type="datetime" />
+          <Property Name="Fecha_DryHopp" Type="datetime" />
+          <Property Name="Peso_fermentadores" Type="varchar" MaxLength="15" />
+          <Property Name="id_UnidadMedida" Type="char" MaxLength="4" />
+          <Property Name="Cantid_Barriles" Type="int" />
+          <Property Name="NotasDelMaestro" Type="varchar" MaxLength="25" />
+          <Property Name="FechaFin_desc" Type="datetime" />
+          <Property Name="DryHopp" Type="char" MaxLength="1" />
+          <Property Name="Id_op" Type="char" MaxLength="4" />
+        </EntityType>
+        <EntityType Name="TB_Cliente">
+          <Key>
+            <PropertyRef Name="id_cliente" />
+          </Key>
+          <Property Name="id_cliente" Type="char" MaxLength="4" Nullable="false" />
+          <Property Name="id_Ubigeo" Type="char" MaxLength="6" />
+          <Property Name="tipo_cli" Type="char" MaxLength="1" />
+          <Property Name="nom_cli" Type="varchar" MaxLength="25" />
+          <Property Name="ape_cli" Type="varchar" MaxLength="25" />
+          <Property Name="ruc_cli" Type="char" MaxLength="11" />
+          <Property Name="dni_cli" Type="char" MaxLength="8" />
+          <Property Name="direccion_cli" Type="varchar" MaxLength="50" />
+          <Property Name="raz_soc_cli" Type="varchar" MaxLength="50" />
+          <Property Name="fec_reg_cli" Type="datetime" />
+          <Property Name="usu_reg_cli" Type="varchar" MaxLength="30" />
+          <Property Name="fec_ultm_mod_cli" Type="datetime" />
+          <Property Name="usu_ultm_mod_cli" Type="varchar" MaxLength="30" />
+          <Property Name="estado_cli" Type="char" MaxLength="1" />
+        </EntityType>
+        <EntityType Name="TB_OrdenDespacho">
+          <Key>
+            <PropertyRef Name="id_ord_desp" />
+          </Key>
+          <Property Name="id_ord_desp" Type="char" MaxLength="4" Nullable="false" />
+          <Property Name="ID_Producto" Type="char" MaxLength="4" />
+          <Property Name="id_cliente" Type="char" MaxLength="4" />
+          <Property Name="cantidad_des" Type="int" />
+          <Property Name="precentacion_des" Type="varchar" MaxLength="30" />
+          <Property Name="pto_venta" Type="char" MaxLength="1" />
+          <Property Name="estado_res" Type="char" MaxLength="1" />
+          <Property Name="fec_reg_des" Type="datetime" />
+        </EntityType>
+        <EntityType Name="TB_Producto">
+          <Key>
+            <PropertyRef Name="ID_Producto" />
+          </Key>
+          <Property Name="ID_Producto" Type="char" MaxLength="4" Nullable="false" />
+          <Property Name="id_UnidadMedida" Type="char" MaxLength="4" />
+          <Property Name="tipo_producto" Type="char" MaxLength="1" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="25" />
+          <Property Name="Presentacion" Type="varchar" MaxLength="15" />
+          <Property Name="Precio" Type="money" />
+          <Property Name="Stock" Type="int" />
+          <Property Name="Stock_min" Type="int" />
+          <Property Name="fec_reg_pro" Type="datetime" />
+          <Property Name="usu_reg_pro" Type="varchar" MaxLength="30" />
+          <Property Name="fec_ultm_mod_pro" Type="datetime" />
+          <Property Name="usu_ultm_mod_pro" Type="varchar" MaxLength="30" />
+        </EntityType>
+        <EntityType Name="TB_Ubigeo">
+          <Key>
+            <PropertyRef Name="id_Ubigeo" />
+          </Key>
+          <Property Name="id_Ubigeo" Type="char" MaxLength="6" Nullable="false" />
+          <Property Name="idDepa" Type="char" MaxLength="2" />
+          <Property Name="idDistr" Type="char" MaxLength="2" />
+          <Property Name="idProv" Type="char" MaxLength="2" />
+          <Property Name="Departamento" Type="varchar" MaxLength="25" />
+          <Property Name="Distrito" Type="varchar" MaxLength="25" />
+          <Property Name="Provincia" Type="varchar" MaxLength="25" />
+        </EntityType>
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'CERVECERIA_CLL.dbo.vw_VistaCliente' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <EntityType Name="vw_VistaCliente">
+          <Key>
+            <PropertyRef Name="id_cliente" />
+          </Key>
+          <Property Name="id_cliente" Type="char" MaxLength="4" Nullable="false" />
+          <Property Name="id_Ubigeo" Type="char" MaxLength="6" />
+          <Property Name="nom_cli" Type="varchar" MaxLength="25" />
+          <Property Name="ape_cli" Type="varchar" MaxLength="25" />
+          <Property Name="ruc_cli" Type="char" MaxLength="11" />
+          <Property Name="dni_cli" Type="char" MaxLength="8" />
+          <Property Name="direccion_cli" Type="varchar" MaxLength="50" />
+          <Property Name="departamento" Type="varchar" MaxLength="25" />
+          <Property Name="provincia" Type="varchar" MaxLength="25" />
+          <Property Name="distrito" Type="varchar" MaxLength="25" />
+          <Property Name="raz_soc_cli" Type="varchar" MaxLength="50" />
+          <Property Name="tipo_cli" Type="char" MaxLength="1" />
+          <Property Name="Tipo_Cliente" Type="varchar" MaxLength="9" />
+          <Property Name="Estado" Type="varchar" MaxLength="8" />
+        </EntityType>
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'CERVECERIA_CLL.dbo.vw_VistaOrdenDespacho' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <EntityType Name="vw_VistaOrdenDespacho">
+          <Key>
+            <PropertyRef Name="id_ord_desp" />
+          </Key>
+          <Property Name="id_ord_desp" Type="char" MaxLength="4" Nullable="false" />
+          <Property Name="ID_Producto" Type="char" MaxLength="4" />
+          <Property Name="id_cliente" Type="char" MaxLength="4" />
+          <Property Name="cantidad_des" Type="int" />
+          <Property Name="precentacion_des" Type="varchar" MaxLength="30" />
+          <Property Name="pto_venta" Type="char" MaxLength="1" />
+          <Property Name="PtoVenta" Type="varchar" MaxLength="11" />
+          <Property Name="estado_res" Type="char" MaxLength="1" />
+          <Property Name="EstadoRes" Type="varchar" MaxLength="8" />
+          <Property Name="fec_reg_des" Type="datetime" />
+          <Property Name="Antiguedad" Type="int" />
+        </EntityType>
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'CERVECERIA_CLL.dbo.vw_VistaProducto' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <EntityType Name="vw_VistaProducto">
+          <Key>
+            <PropertyRef Name="ID_Producto" />
+          </Key>
+          <Property Name="ID_Producto" Type="char" MaxLength="4" Nullable="false" />
+          <Property Name="id_UnidadMedida" Type="char" MaxLength="4" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="25" />
+          <Property Name="tipo_producto" Type="char" MaxLength="1" />
+          <Property Name="Tipo de producto" Type="varchar" MaxLength="7" />
+          <Property Name="Presentacion" Type="varchar" MaxLength="15" />
+          <Property Name="unidad_nom" Type="varchar" MaxLength="25" />
+          <Property Name="Precio" Type="money" />
+          <Property Name="Stock" Type="int" />
+          <Property Name="Stock_min" Type="int" />
+        </EntityType>
+        <Association Name="Relationship38">
+          <End Role="TB_Ubigeo" Type="Self.TB_Ubigeo" Multiplicity="0..1" />
+          <End Role="TB_Cliente" Type="Self.TB_Cliente" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TB_Ubigeo">
+              <PropertyRef Name="id_Ubigeo" />
+            </Principal>
+            <Dependent Role="TB_Cliente">
+              <PropertyRef Name="id_Ubigeo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Relationship39">
+          <End Role="TB_Producto" Type="Self.TB_Producto" Multiplicity="0..1" />
+          <End Role="TB_OrdenDespacho" Type="Self.TB_OrdenDespacho" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TB_Producto">
+              <PropertyRef Name="ID_Producto" />
+            </Principal>
+            <Dependent Role="TB_OrdenDespacho">
+              <PropertyRef Name="ID_Producto" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Relationship40">
+          <End Role="TB_Cliente" Type="Self.TB_Cliente" Multiplicity="0..1" />
+          <End Role="TB_OrdenDespacho" Type="Self.TB_OrdenDespacho" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TB_Cliente">
+              <PropertyRef Name="id_cliente" />
+            </Principal>
+            <Dependent Role="TB_OrdenDespacho">
+              <PropertyRef Name="id_cliente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="SpRankingCliente" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="fec_ini" Type="smalldatetime" Mode="In" />
+          <Parameter Name="fec_fin" Type="smalldatetime" Mode="In" />
+        </Function>
+        <Function Name="usp_ActualizarCliente" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="vcodClie" Type="char" Mode="In" />
+          <Parameter Name="idUbig" Type="nvarchar" Mode="In" />
+          <Parameter Name="tipoCli" Type="nchar" Mode="In" />
+          <Parameter Name="NombClie" Type="nvarchar" Mode="In" />
+          <Parameter Name="ApeClie" Type="nchar" Mode="In" />
+          <Parameter Name="rucClie" Type="nvarchar" Mode="In" />
+          <Parameter Name="dniClie" Type="varchar" Mode="In" />
+          <Parameter Name="dirClie" Type="varchar" Mode="In" />
+          <Parameter Name="razSocClie" Type="nvarchar" Mode="In" />
+          <Parameter Name="UsuModCli" Type="varchar" Mode="In" />
+          <Parameter Name="estClie" Type="nchar" Mode="In" />
+        </Function>
+        <Function Name="usp_CantidadDespachoPorAño" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="usp_ClienteMasOrdenDespacho" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="usp_DepartamentoMasOrdenDespacho" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="usp_EliminarCliente" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="vcodClie" Type="char" Mode="In" />
+        </Function>
+        <Function Name="usp_InsertarCliente" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="idUbig" Type="nvarchar" Mode="In" />
+          <Parameter Name="tipoCli" Type="nchar" Mode="In" />
+          <Parameter Name="NombClie" Type="nvarchar" Mode="In" />
+          <Parameter Name="ApeClie" Type="nchar" Mode="In" />
+          <Parameter Name="rucClie" Type="nvarchar" Mode="In" />
+          <Parameter Name="dniClie" Type="varchar" Mode="In" />
+          <Parameter Name="dirClie" Type="varchar" Mode="In" />
+          <Parameter Name="razSocClie" Type="nvarchar" Mode="In" />
+          <Parameter Name="UsuRegClie" Type="varchar" Mode="In" />
+          <Parameter Name="estClie" Type="nchar" Mode="In" />
+        </Function>
+        <Function Name="usp_ListarCliente" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="usp_ProductoMasProducidoXAño" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="año" Type="int" Mode="In" />
+        </Function>
+        <EntityContainer Name="CERVECERIA_CLLModelStoreContainer">
+          <EntitySet Name="TB_Bitacora" EntityType="Self.TB_Bitacora" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TB_Cliente" EntityType="Self.TB_Cliente" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TB_OrdenDespacho" EntityType="Self.TB_OrdenDespacho" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TB_Producto" EntityType="Self.TB_Producto" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TB_Ubigeo" EntityType="Self.TB_Ubigeo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="vw_VistaCliente" EntityType="Self.vw_VistaCliente" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vw_VistaCliente].[id_cliente] AS [id_cliente], 
+    [vw_VistaCliente].[id_Ubigeo] AS [id_Ubigeo], 
+    [vw_VistaCliente].[nom_cli] AS [nom_cli], 
+    [vw_VistaCliente].[ape_cli] AS [ape_cli], 
+    [vw_VistaCliente].[ruc_cli] AS [ruc_cli], 
+    [vw_VistaCliente].[dni_cli] AS [dni_cli], 
+    [vw_VistaCliente].[direccion_cli] AS [direccion_cli], 
+    [vw_VistaCliente].[departamento] AS [departamento], 
+    [vw_VistaCliente].[provincia] AS [provincia], 
+    [vw_VistaCliente].[distrito] AS [distrito], 
+    [vw_VistaCliente].[raz_soc_cli] AS [raz_soc_cli], 
+    [vw_VistaCliente].[tipo_cli] AS [tipo_cli], 
+    [vw_VistaCliente].[Tipo_Cliente] AS [Tipo_Cliente], 
+    [vw_VistaCliente].[Estado] AS [Estado]
+    FROM [dbo].[vw_VistaCliente] AS [vw_VistaCliente]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="vw_VistaOrdenDespacho" EntityType="Self.vw_VistaOrdenDespacho" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vw_VistaOrdenDespacho].[id_ord_desp] AS [id_ord_desp], 
+    [vw_VistaOrdenDespacho].[ID_Producto] AS [ID_Producto], 
+    [vw_VistaOrdenDespacho].[id_cliente] AS [id_cliente], 
+    [vw_VistaOrdenDespacho].[cantidad_des] AS [cantidad_des], 
+    [vw_VistaOrdenDespacho].[precentacion_des] AS [precentacion_des], 
+    [vw_VistaOrdenDespacho].[pto_venta] AS [pto_venta], 
+    [vw_VistaOrdenDespacho].[PtoVenta] AS [PtoVenta], 
+    [vw_VistaOrdenDespacho].[estado_res] AS [estado_res], 
+    [vw_VistaOrdenDespacho].[EstadoRes] AS [EstadoRes], 
+    [vw_VistaOrdenDespacho].[fec_reg_des] AS [fec_reg_des], 
+    [vw_VistaOrdenDespacho].[Antiguedad] AS [Antiguedad]
+    FROM [dbo].[vw_VistaOrdenDespacho] AS [vw_VistaOrdenDespacho]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="vw_VistaProducto" EntityType="Self.vw_VistaProducto" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vw_VistaProducto].[ID_Producto] AS [ID_Producto], 
+    [vw_VistaProducto].[id_UnidadMedida] AS [id_UnidadMedida], 
+    [vw_VistaProducto].[Descripcion] AS [Descripcion], 
+    [vw_VistaProducto].[tipo_producto] AS [tipo_producto], 
+    [vw_VistaProducto].[Tipo de producto] AS [Tipo de producto], 
+    [vw_VistaProducto].[Presentacion] AS [Presentacion], 
+    [vw_VistaProducto].[unidad_nom] AS [unidad_nom], 
+    [vw_VistaProducto].[Precio] AS [Precio], 
+    [vw_VistaProducto].[Stock] AS [Stock], 
+    [vw_VistaProducto].[Stock_min] AS [Stock_min]
+    FROM [dbo].[vw_VistaProducto] AS [vw_VistaProducto]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="Relationship38" Association="Self.Relationship38">
+            <End Role="TB_Ubigeo" EntitySet="TB_Ubigeo" />
+            <End Role="TB_Cliente" EntitySet="TB_Cliente" />
+          </AssociationSet>
+          <AssociationSet Name="Relationship39" Association="Self.Relationship39">
+            <End Role="TB_Producto" EntitySet="TB_Producto" />
+            <End Role="TB_OrdenDespacho" EntitySet="TB_OrdenDespacho" />
+          </AssociationSet>
+          <AssociationSet Name="Relationship40" Association="Self.Relationship40">
+            <End Role="TB_Cliente" EntitySet="TB_Cliente" />
+            <End Role="TB_OrdenDespacho" EntitySet="TB_OrdenDespacho" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="CERVECERIA_CLLModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="TB_Cliente">
+          <Key>
+            <PropertyRef Name="id_cliente" />
+          </Key>
+          <Property Name="id_cliente" Type="String" MaxLength="4" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="id_Ubigeo" Type="String" MaxLength="6" FixedLength="true" Unicode="false" />
+          <Property Name="tipo_cli" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="nom_cli" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="ape_cli" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="ruc_cli" Type="String" MaxLength="11" FixedLength="true" Unicode="false" />
+          <Property Name="dni_cli" Type="String" MaxLength="8" FixedLength="true" Unicode="false" />
+          <Property Name="direccion_cli" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="raz_soc_cli" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="fec_reg_cli" Type="DateTime" Precision="3" />
+          <Property Name="usu_reg_cli" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="fec_ultm_mod_cli" Type="DateTime" Precision="3" />
+          <Property Name="usu_ultm_mod_cli" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="estado_cli" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <NavigationProperty Name="TB_Ubigeo" Relationship="Self.Relationship38" FromRole="TB_Cliente" ToRole="TB_Ubigeo" />
+          <NavigationProperty Name="TB_OrdenDespacho" Relationship="CERVECERIA_CLLModel.Relationship40" FromRole="TB_Cliente" ToRole="TB_OrdenDespacho" />
+        </EntityType>
+        <EntityType Name="TB_Ubigeo">
+          <Key>
+            <PropertyRef Name="id_Ubigeo" />
+          </Key>
+          <Property Name="id_Ubigeo" Type="String" MaxLength="6" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="idDepa" Type="String" MaxLength="2" FixedLength="true" Unicode="false" />
+          <Property Name="idDistr" Type="String" MaxLength="2" FixedLength="true" Unicode="false" />
+          <Property Name="idProv" Type="String" MaxLength="2" FixedLength="true" Unicode="false" />
+          <Property Name="Departamento" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="Distrito" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="Provincia" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="TB_Cliente" Relationship="Self.Relationship38" FromRole="TB_Ubigeo" ToRole="TB_Cliente" />
+        </EntityType>
+        <Association Name="Relationship38">
+          <End Role="TB_Ubigeo" Type="Self.TB_Ubigeo" Multiplicity="0..1" />
+          <End Role="TB_Cliente" Type="Self.TB_Cliente" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TB_Ubigeo">
+              <PropertyRef Name="id_Ubigeo" />
+            </Principal>
+            <Dependent Role="TB_Cliente">
+              <PropertyRef Name="id_Ubigeo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="CERVECERIA_CLLEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="TB_Cliente" EntityType="Self.TB_Cliente" />
+          <EntitySet Name="TB_Ubigeo" EntityType="Self.TB_Ubigeo" />
+          <AssociationSet Name="Relationship38" Association="Self.Relationship38">
+            <End Role="TB_Ubigeo" EntitySet="TB_Ubigeo" />
+            <End Role="TB_Cliente" EntitySet="TB_Cliente" />
+          </AssociationSet>
+          <FunctionImport Name="usp_ActualizarCliente">
+            <Parameter Name="vcodClie" Mode="In" Type="String" />
+            <Parameter Name="idUbig" Mode="In" Type="String" />
+            <Parameter Name="tipoCli" Mode="In" Type="String" />
+            <Parameter Name="NombClie" Mode="In" Type="String" />
+            <Parameter Name="ApeClie" Mode="In" Type="String" />
+            <Parameter Name="rucClie" Mode="In" Type="String" />
+            <Parameter Name="dniClie" Mode="In" Type="String" />
+            <Parameter Name="dirClie" Mode="In" Type="String" />
+            <Parameter Name="razSocClie" Mode="In" Type="String" />
+            <Parameter Name="UsuModCli" Mode="In" Type="String" />
+            <Parameter Name="estClie" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="usp_EliminarCliente">
+          <Parameter Name="vcodClie" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="usp_InsertarCliente">
+            <Parameter Name="idUbig" Mode="In" Type="String" />
+            <Parameter Name="tipoCli" Mode="In" Type="String" />
+            <Parameter Name="NombClie" Mode="In" Type="String" />
+            <Parameter Name="ApeClie" Mode="In" Type="String" />
+            <Parameter Name="rucClie" Mode="In" Type="String" />
+            <Parameter Name="dniClie" Mode="In" Type="String" />
+            <Parameter Name="dirClie" Mode="In" Type="String" />
+            <Parameter Name="razSocClie" Mode="In" Type="String" />
+            <Parameter Name="UsuRegClie" Mode="In" Type="String" />
+            <Parameter Name="estClie" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="usp_ListarCliente" ReturnType="Collection(CERVECERIA_CLLModel.usp_ListarCliente_Result)" />
+          <FunctionImport Name="usp_ProductoMasProducidoXAño" ReturnType="Collection(CERVECERIA_CLLModel.usp_ProductoMasProducidoXAño_Result)">
+          <Parameter Name="año" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <EntitySet Name="TB_Bitacora" EntityType="CERVECERIA_CLLModel.TB_Bitacora" />
+          <EntitySet Name="TB_OrdenDespacho" EntityType="CERVECERIA_CLLModel.TB_OrdenDespacho" />
+          <EntitySet Name="TB_Producto" EntityType="CERVECERIA_CLLModel.TB_Producto" />
+          <EntitySet Name="vw_VistaProducto" EntityType="CERVECERIA_CLLModel.vw_VistaProducto" />
+          <AssociationSet Name="Relationship40" Association="CERVECERIA_CLLModel.Relationship40">
+            <End Role="TB_Cliente" EntitySet="TB_Cliente" />
+            <End Role="TB_OrdenDespacho" EntitySet="TB_OrdenDespacho" />
+          </AssociationSet>
+          <AssociationSet Name="Relationship39" Association="CERVECERIA_CLLModel.Relationship39">
+            <End Role="TB_Producto" EntitySet="TB_Producto" />
+            <End Role="TB_OrdenDespacho" EntitySet="TB_OrdenDespacho" />
+          </AssociationSet>
+          <EntitySet Name="vw_VistaCliente" EntityType="CERVECERIA_CLLModel.vw_VistaCliente" />
+          <FunctionImport Name="usp_ClienteMasOrdenDespacho" ReturnType="Collection(CERVECERIA_CLLModel.usp_ClienteMasOrdenDespacho_Result)" />
+          <EntitySet Name="vw_VistaOrdenDespacho" EntityType="CERVECERIA_CLLModel.vw_VistaOrdenDespacho" />
+          <FunctionImport Name="usp_CantidadDespachoPorAño" ReturnType="Collection(CERVECERIA_CLLModel.usp_CantidadDespachoPorAño_Result)" />
+          <FunctionImport Name="usp_DepartamentoMasOrdenDespacho" ReturnType="Collection(CERVECERIA_CLLModel.usp_DepartamentoMasOrdenDespacho_Result)" />
+          <FunctionImport Name="SpRankingCliente" ReturnType="Collection(CERVECERIA_CLLModel.SpRankingCliente_Result)">
+            <Parameter Name="fec_ini" Mode="In" Type="DateTime" />
+            <Parameter Name="fec_fin" Mode="In" Type="DateTime" />
+          </FunctionImport>
+        </EntityContainer>
+        <ComplexType Name="usp_ListarCliente_Result">
+          <Property Type="String" Name="id_cliente" Nullable="false" MaxLength="4" />
+          <Property Type="String" Name="id_Ubigeo" Nullable="true" MaxLength="6" />
+          <Property Type="String" Name="nom_cli" Nullable="true" MaxLength="25" />
+          <Property Type="String" Name="ape_cli" Nullable="true" MaxLength="25" />
+          <Property Type="String" Name="ruc_cli" Nullable="true" MaxLength="11" />
+          <Property Type="String" Name="dni_cli" Nullable="true" MaxLength="8" />
+          <Property Type="String" Name="direccion_cli" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="departamento" Nullable="true" MaxLength="25" />
+          <Property Type="String" Name="provincia" Nullable="true" MaxLength="25" />
+          <Property Type="String" Name="distrito" Nullable="true" MaxLength="25" />
+          <Property Type="String" Name="raz_soc_cli" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Tipo_Cliente" Nullable="true" MaxLength="9" />
+          <Property Type="String" Name="Estado" Nullable="true" MaxLength="8" />
+        </ComplexType>
+        <ComplexType Name="usp_ProductoMasProducidoXAño_Result">
+          <Property Type="String" Name="Producto" Nullable="true" MaxLength="25" />
+          <Property Type="Int32" Name="Litros_Producidos" Nullable="false" />
+        </ComplexType>
+        <EntityType Name="TB_Bitacora">
+          <Key>
+            <PropertyRef Name="Id_bitacora" />
+          </Key>
+          <Property Name="Id_bitacora" Type="String" Nullable="false" MaxLength="5" FixedLength="true" Unicode="false" />
+          <Property Name="Id_empleado" Type="String" MaxLength="3" FixedLength="true" Unicode="false" />
+          <Property Name="Id_receta" Type="String" MaxLength="4" FixedLength="true" Unicode="false" />
+          <Property Name="fecha_inicio" Type="DateTime" Precision="0" />
+          <Property Name="litros_producidos" Type="Int32" Nullable="false" />
+          <Property Name="tiempo_real" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="inicio_fermentacion" Type="DateTime" Precision="3" />
+          <Property Name="fin_fermentacion" Type="DateTime" Precision="3" />
+          <Property Name="FechaIni_desc" Type="DateTime" Precision="3" />
+          <Property Name="InicioMaduracion_frio" Type="DateTime" Precision="3" />
+          <Property Name="FinMaduracion_frio" Type="DateTime" Precision="3" />
+          <Property Name="Fecha_DryHopp" Type="DateTime" Precision="3" />
+          <Property Name="Peso_fermentadores" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="id_UnidadMedida" Type="String" MaxLength="4" FixedLength="true" Unicode="false" />
+          <Property Name="Cantid_Barriles" Type="Int32" />
+          <Property Name="NotasDelMaestro" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="FechaFin_desc" Type="DateTime" Precision="3" />
+          <Property Name="DryHopp" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="Id_op" Type="String" MaxLength="4" FixedLength="true" Unicode="false" />
+        </EntityType>
+        <EntityType Name="TB_OrdenDespacho">
+          <Key>
+            <PropertyRef Name="id_ord_desp" />
+          </Key>
+          <Property Name="id_ord_desp" Type="String" Nullable="false" MaxLength="4" FixedLength="true" Unicode="false" />
+          <Property Name="ID_Producto" Type="String" MaxLength="4" FixedLength="true" Unicode="false" />
+          <Property Name="id_cliente" Type="String" MaxLength="4" FixedLength="true" Unicode="false" />
+          <Property Name="cantidad_des" Type="Int32" />
+          <Property Name="precentacion_des" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="pto_venta" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="estado_res" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="fec_reg_des" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="TB_Cliente" Relationship="CERVECERIA_CLLModel.Relationship40" FromRole="TB_OrdenDespacho" ToRole="TB_Cliente" />
+          <NavigationProperty Name="TB_Producto" Relationship="CERVECERIA_CLLModel.Relationship39" FromRole="TB_OrdenDespacho" ToRole="TB_Producto" />
+        </EntityType>
+        <EntityType Name="TB_Producto">
+          <Key>
+            <PropertyRef Name="ID_Producto" />
+          </Key>
+          <Property Name="ID_Producto" Type="String" Nullable="false" MaxLength="4" FixedLength="true" Unicode="false" />
+          <Property Name="id_UnidadMedida" Type="String" MaxLength="4" FixedLength="true" Unicode="false" />
+          <Property Name="tipo_producto" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="Presentacion" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="Precio" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="Stock" Type="Int32" />
+          <Property Name="Stock_min" Type="Int32" />
+          <Property Name="fec_reg_pro" Type="DateTime" Precision="3" />
+          <Property Name="usu_reg_pro" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="fec_ultm_mod_pro" Type="DateTime" Precision="3" />
+          <Property Name="usu_ultm_mod_pro" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="TB_OrdenDespacho" Relationship="CERVECERIA_CLLModel.Relationship39" FromRole="TB_Producto" ToRole="TB_OrdenDespacho" />
+        </EntityType>
+        <EntityType Name="vw_VistaProducto">
+          <Key>
+            <PropertyRef Name="ID_Producto" />
+          </Key>
+          <Property Name="ID_Producto" Type="String" Nullable="false" MaxLength="4" FixedLength="true" Unicode="false" />
+          <Property Name="id_UnidadMedida" Type="String" MaxLength="4" FixedLength="true" Unicode="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="tipo_producto" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="Tipo_de_producto" Type="String" MaxLength="7" FixedLength="false" Unicode="false" />
+          <Property Name="Presentacion" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="unidad_nom" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="Precio" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="Stock" Type="Int32" />
+          <Property Name="Stock_min" Type="Int32" />
+        </EntityType>
+        <Association Name="Relationship40">
+          <End Type="CERVECERIA_CLLModel.TB_Cliente" Role="TB_Cliente" Multiplicity="0..1" />
+          <End Type="CERVECERIA_CLLModel.TB_OrdenDespacho" Role="TB_OrdenDespacho" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TB_Cliente">
+              <PropertyRef Name="id_cliente" />
+            </Principal>
+            <Dependent Role="TB_OrdenDespacho">
+              <PropertyRef Name="id_cliente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Relationship39">
+          <End Type="CERVECERIA_CLLModel.TB_Producto" Role="TB_Producto" Multiplicity="0..1" />
+          <End Type="CERVECERIA_CLLModel.TB_OrdenDespacho" Role="TB_OrdenDespacho" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TB_Producto">
+              <PropertyRef Name="ID_Producto" />
+            </Principal>
+            <Dependent Role="TB_OrdenDespacho">
+              <PropertyRef Name="ID_Producto" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="vw_VistaCliente">
+          <Key>
+            <PropertyRef Name="id_cliente" />
+          </Key>
+          <Property Name="id_cliente" Type="String" Nullable="false" MaxLength="4" FixedLength="true" Unicode="false" />
+          <Property Name="id_Ubigeo" Type="String" MaxLength="6" FixedLength="true" Unicode="false" />
+          <Property Name="nom_cli" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="ape_cli" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="ruc_cli" Type="String" MaxLength="11" FixedLength="true" Unicode="false" />
+          <Property Name="dni_cli" Type="String" MaxLength="8" FixedLength="true" Unicode="false" />
+          <Property Name="direccion_cli" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="departamento" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="provincia" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="distrito" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="raz_soc_cli" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="tipo_cli" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="Tipo_Cliente" Type="String" MaxLength="9" FixedLength="false" Unicode="false" />
+          <Property Name="Estado" Type="String" MaxLength="8" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <ComplexType Name="usp_ClienteMasOrdenDespacho_Result">
+          <Property Type="String" Name="Cliente" Nullable="true" MaxLength="51" />
+          <Property Type="Int32" Name="Total_Ordenes" Nullable="true" />
+        </ComplexType>
+        <EntityType Name="vw_VistaOrdenDespacho">
+          <Key>
+            <PropertyRef Name="id_ord_desp" />
+          </Key>
+          <Property Name="id_ord_desp" Type="String" Nullable="false" MaxLength="4" FixedLength="true" Unicode="false" />
+          <Property Name="ID_Producto" Type="String" MaxLength="4" FixedLength="true" Unicode="false" />
+          <Property Name="id_cliente" Type="String" MaxLength="4" FixedLength="true" Unicode="false" />
+          <Property Name="cantidad_des" Type="Int32" />
+          <Property Name="precentacion_des" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="pto_venta" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="PtoVenta" Type="String" MaxLength="11" FixedLength="false" Unicode="false" />
+          <Property Name="estado_res" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="EstadoRes" Type="String" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="fec_reg_des" Type="DateTime" Precision="3" />
+          <Property Name="Antiguedad" Type="Int32" />
+        </EntityType>
+        <ComplexType Name="usp_CantidadDespachoPorAño_Result">
+          <Property Type="Int32" Name="Año" Nullable="true" />
+          <Property Type="Int32" Name="Despacho_Atendido" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="usp_DepartamentoMasOrdenDespacho_Result">
+          <Property Type="String" Name="Departamento" Nullable="true" MaxLength="25" />
+          <Property Type="Int32" Name="Total_Ordenes" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="SpRankingCliente_Result">
+          <Property Type="String" Name="nom_cli" Nullable="true" MaxLength="25" />
+          <Property Type="Int32" Name="cantidad_des" Nullable="true" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="CERVECERIA_CLLModelStoreContainer" CdmEntityContainer="CERVECERIA_CLLEntities">
+          <EntitySetMapping Name="TB_Cliente">
+            <EntityTypeMapping TypeName="CERVECERIA_CLLModel.TB_Cliente">
+              <MappingFragment StoreEntitySet="TB_Cliente">
+                <ScalarProperty Name="id_cliente" ColumnName="id_cliente" />
+                <ScalarProperty Name="id_Ubigeo" ColumnName="id_Ubigeo" />
+                <ScalarProperty Name="tipo_cli" ColumnName="tipo_cli" />
+                <ScalarProperty Name="nom_cli" ColumnName="nom_cli" />
+                <ScalarProperty Name="ape_cli" ColumnName="ape_cli" />
+                <ScalarProperty Name="ruc_cli" ColumnName="ruc_cli" />
+                <ScalarProperty Name="dni_cli" ColumnName="dni_cli" />
+                <ScalarProperty Name="direccion_cli" ColumnName="direccion_cli" />
+                <ScalarProperty Name="raz_soc_cli" ColumnName="raz_soc_cli" />
+                <ScalarProperty Name="fec_reg_cli" ColumnName="fec_reg_cli" />
+                <ScalarProperty Name="usu_reg_cli" ColumnName="usu_reg_cli" />
+                <ScalarProperty Name="fec_ultm_mod_cli" ColumnName="fec_ultm_mod_cli" />
+                <ScalarProperty Name="usu_ultm_mod_cli" ColumnName="usu_ultm_mod_cli" />
+                <ScalarProperty Name="estado_cli" ColumnName="estado_cli" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TB_Ubigeo">
+            <EntityTypeMapping TypeName="CERVECERIA_CLLModel.TB_Ubigeo">
+              <MappingFragment StoreEntitySet="TB_Ubigeo">
+                <ScalarProperty Name="id_Ubigeo" ColumnName="id_Ubigeo" />
+                <ScalarProperty Name="idDepa" ColumnName="idDepa" />
+                <ScalarProperty Name="idDistr" ColumnName="idDistr" />
+                <ScalarProperty Name="idProv" ColumnName="idProv" />
+                <ScalarProperty Name="Departamento" ColumnName="Departamento" />
+                <ScalarProperty Name="Distrito" ColumnName="Distrito" />
+                <ScalarProperty Name="Provincia" ColumnName="Provincia" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="usp_ActualizarCliente" FunctionName="CERVECERIA_CLLModel.Store.usp_ActualizarCliente" />
+          <FunctionImportMapping FunctionImportName="usp_EliminarCliente" FunctionName="CERVECERIA_CLLModel.Store.usp_EliminarCliente" />
+          <FunctionImportMapping FunctionImportName="usp_InsertarCliente" FunctionName="CERVECERIA_CLLModel.Store.usp_InsertarCliente" />
+          <FunctionImportMapping FunctionImportName="usp_ListarCliente" FunctionName="CERVECERIA_CLLModel.Store.usp_ListarCliente">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="CERVECERIA_CLLModel.usp_ListarCliente_Result">
+                <ScalarProperty Name="id_cliente" ColumnName="id_cliente" />
+                <ScalarProperty Name="id_Ubigeo" ColumnName="id_Ubigeo" />
+                <ScalarProperty Name="nom_cli" ColumnName="nom_cli" />
+                <ScalarProperty Name="ape_cli" ColumnName="ape_cli" />
+                <ScalarProperty Name="ruc_cli" ColumnName="ruc_cli" />
+                <ScalarProperty Name="dni_cli" ColumnName="dni_cli" />
+                <ScalarProperty Name="direccion_cli" ColumnName="direccion_cli" />
+                <ScalarProperty Name="departamento" ColumnName="departamento" />
+                <ScalarProperty Name="provincia" ColumnName="provincia" />
+                <ScalarProperty Name="distrito" ColumnName="distrito" />
+                <ScalarProperty Name="raz_soc_cli" ColumnName="raz_soc_cli" />
+                <ScalarProperty Name="Tipo_Cliente" ColumnName="Tipo_Cliente" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="usp_ProductoMasProducidoXAño" FunctionName="CERVECERIA_CLLModel.Store.usp_ProductoMasProducidoXAño">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="CERVECERIA_CLLModel.usp_ProductoMasProducidoXAño_Result">
+                <ScalarProperty Name="Producto" ColumnName="Producto" />
+                <ScalarProperty Name="Litros_Producidos" ColumnName="Litros_Producidos" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <EntitySetMapping Name="TB_Bitacora">
+            <EntityTypeMapping TypeName="CERVECERIA_CLLModel.TB_Bitacora">
+              <MappingFragment StoreEntitySet="TB_Bitacora">
+                <ScalarProperty Name="Id_op" ColumnName="Id_op" />
+                <ScalarProperty Name="DryHopp" ColumnName="DryHopp" />
+                <ScalarProperty Name="FechaFin_desc" ColumnName="FechaFin_desc" />
+                <ScalarProperty Name="NotasDelMaestro" ColumnName="NotasDelMaestro" />
+                <ScalarProperty Name="Cantid_Barriles" ColumnName="Cantid_Barriles" />
+                <ScalarProperty Name="id_UnidadMedida" ColumnName="id_UnidadMedida" />
+                <ScalarProperty Name="Peso_fermentadores" ColumnName="Peso_fermentadores" />
+                <ScalarProperty Name="Fecha_DryHopp" ColumnName="Fecha_DryHopp" />
+                <ScalarProperty Name="FinMaduracion_frio" ColumnName="FinMaduracion_frio" />
+                <ScalarProperty Name="InicioMaduracion_frio" ColumnName="InicioMaduracion_frio" />
+                <ScalarProperty Name="FechaIni_desc" ColumnName="FechaIni_desc" />
+                <ScalarProperty Name="fin_fermentacion" ColumnName="fin_fermentacion" />
+                <ScalarProperty Name="inicio_fermentacion" ColumnName="inicio_fermentacion" />
+                <ScalarProperty Name="tiempo_real" ColumnName="tiempo_real" />
+                <ScalarProperty Name="litros_producidos" ColumnName="litros_producidos" />
+                <ScalarProperty Name="fecha_inicio" ColumnName="fecha_inicio" />
+                <ScalarProperty Name="Id_receta" ColumnName="Id_receta" />
+                <ScalarProperty Name="Id_empleado" ColumnName="Id_empleado" />
+                <ScalarProperty Name="Id_bitacora" ColumnName="Id_bitacora" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TB_OrdenDespacho">
+            <EntityTypeMapping TypeName="CERVECERIA_CLLModel.TB_OrdenDespacho">
+              <MappingFragment StoreEntitySet="TB_OrdenDespacho">
+                <ScalarProperty Name="fec_reg_des" ColumnName="fec_reg_des" />
+                <ScalarProperty Name="estado_res" ColumnName="estado_res" />
+                <ScalarProperty Name="pto_venta" ColumnName="pto_venta" />
+                <ScalarProperty Name="precentacion_des" ColumnName="precentacion_des" />
+                <ScalarProperty Name="cantidad_des" ColumnName="cantidad_des" />
+                <ScalarProperty Name="id_cliente" ColumnName="id_cliente" />
+                <ScalarProperty Name="ID_Producto" ColumnName="ID_Producto" />
+                <ScalarProperty Name="id_ord_desp" ColumnName="id_ord_desp" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TB_Producto">
+            <EntityTypeMapping TypeName="CERVECERIA_CLLModel.TB_Producto">
+              <MappingFragment StoreEntitySet="TB_Producto">
+                <ScalarProperty Name="usu_ultm_mod_pro" ColumnName="usu_ultm_mod_pro" />
+                <ScalarProperty Name="fec_ultm_mod_pro" ColumnName="fec_ultm_mod_pro" />
+                <ScalarProperty Name="usu_reg_pro" ColumnName="usu_reg_pro" />
+                <ScalarProperty Name="fec_reg_pro" ColumnName="fec_reg_pro" />
+                <ScalarProperty Name="Stock_min" ColumnName="Stock_min" />
+                <ScalarProperty Name="Stock" ColumnName="Stock" />
+                <ScalarProperty Name="Precio" ColumnName="Precio" />
+                <ScalarProperty Name="Presentacion" ColumnName="Presentacion" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="tipo_producto" ColumnName="tipo_producto" />
+                <ScalarProperty Name="id_UnidadMedida" ColumnName="id_UnidadMedida" />
+                <ScalarProperty Name="ID_Producto" ColumnName="ID_Producto" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vw_VistaProducto">
+            <EntityTypeMapping TypeName="CERVECERIA_CLLModel.vw_VistaProducto">
+              <MappingFragment StoreEntitySet="vw_VistaProducto">
+                <ScalarProperty Name="Stock_min" ColumnName="Stock_min" />
+                <ScalarProperty Name="Stock" ColumnName="Stock" />
+                <ScalarProperty Name="Precio" ColumnName="Precio" />
+                <ScalarProperty Name="unidad_nom" ColumnName="unidad_nom" />
+                <ScalarProperty Name="Presentacion" ColumnName="Presentacion" />
+                <ScalarProperty Name="Tipo_de_producto" ColumnName="Tipo de producto" />
+                <ScalarProperty Name="tipo_producto" ColumnName="tipo_producto" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="id_UnidadMedida" ColumnName="id_UnidadMedida" />
+                <ScalarProperty Name="ID_Producto" ColumnName="ID_Producto" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vw_VistaCliente">
+            <EntityTypeMapping TypeName="CERVECERIA_CLLModel.vw_VistaCliente">
+              <MappingFragment StoreEntitySet="vw_VistaCliente">
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+                <ScalarProperty Name="Tipo_Cliente" ColumnName="Tipo_Cliente" />
+                <ScalarProperty Name="tipo_cli" ColumnName="tipo_cli" />
+                <ScalarProperty Name="raz_soc_cli" ColumnName="raz_soc_cli" />
+                <ScalarProperty Name="distrito" ColumnName="distrito" />
+                <ScalarProperty Name="provincia" ColumnName="provincia" />
+                <ScalarProperty Name="departamento" ColumnName="departamento" />
+                <ScalarProperty Name="direccion_cli" ColumnName="direccion_cli" />
+                <ScalarProperty Name="dni_cli" ColumnName="dni_cli" />
+                <ScalarProperty Name="ruc_cli" ColumnName="ruc_cli" />
+                <ScalarProperty Name="ape_cli" ColumnName="ape_cli" />
+                <ScalarProperty Name="nom_cli" ColumnName="nom_cli" />
+                <ScalarProperty Name="id_Ubigeo" ColumnName="id_Ubigeo" />
+                <ScalarProperty Name="id_cliente" ColumnName="id_cliente" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="usp_ClienteMasOrdenDespacho" FunctionName="CERVECERIA_CLLModel.Store.usp_ClienteMasOrdenDespacho">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="CERVECERIA_CLLModel.usp_ClienteMasOrdenDespacho_Result">
+                <ScalarProperty Name="Cliente" ColumnName="Cliente" />
+                <ScalarProperty Name="Total_Ordenes" ColumnName="Total_Ordenes" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <EntitySetMapping Name="vw_VistaOrdenDespacho">
+            <EntityTypeMapping TypeName="CERVECERIA_CLLModel.vw_VistaOrdenDespacho">
+              <MappingFragment StoreEntitySet="vw_VistaOrdenDespacho">
+                <ScalarProperty Name="Antiguedad" ColumnName="Antiguedad" />
+                <ScalarProperty Name="fec_reg_des" ColumnName="fec_reg_des" />
+                <ScalarProperty Name="EstadoRes" ColumnName="EstadoRes" />
+                <ScalarProperty Name="estado_res" ColumnName="estado_res" />
+                <ScalarProperty Name="PtoVenta" ColumnName="PtoVenta" />
+                <ScalarProperty Name="pto_venta" ColumnName="pto_venta" />
+                <ScalarProperty Name="precentacion_des" ColumnName="precentacion_des" />
+                <ScalarProperty Name="cantidad_des" ColumnName="cantidad_des" />
+                <ScalarProperty Name="id_cliente" ColumnName="id_cliente" />
+                <ScalarProperty Name="ID_Producto" ColumnName="ID_Producto" />
+                <ScalarProperty Name="id_ord_desp" ColumnName="id_ord_desp" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="usp_CantidadDespachoPorAño" FunctionName="CERVECERIA_CLLModel.Store.usp_CantidadDespachoPorAño">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="CERVECERIA_CLLModel.usp_CantidadDespachoPorAño_Result">
+                <ScalarProperty Name="Año" ColumnName="Año" />
+                <ScalarProperty Name="Despacho_Atendido" ColumnName="Despacho_Atendido" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="usp_DepartamentoMasOrdenDespacho" FunctionName="CERVECERIA_CLLModel.Store.usp_DepartamentoMasOrdenDespacho">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="CERVECERIA_CLLModel.usp_DepartamentoMasOrdenDespacho_Result">
+                <ScalarProperty Name="Departamento" ColumnName="Departamento" />
+                <ScalarProperty Name="Total_Ordenes" ColumnName="Total_Ordenes" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SpRankingCliente" FunctionName="CERVECERIA_CLLModel.Store.SpRankingCliente">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="CERVECERIA_CLLModel.SpRankingCliente_Result">
+                <ScalarProperty Name="nom_cli" ColumnName="nom_cli" />
+                <ScalarProperty Name="cantidad_des" ColumnName="cantidad_des" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
