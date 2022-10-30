@@ -12,7 +12,7 @@ namespace WCF_Cerveza
     // NOTA: puede usar el comando "Rename" del menú "Refactorizar" para cambiar el nombre de clase "ServicioEstadistica" en el código y en el archivo de configuración a la vez.
     public class ServicioEstadistica : IServicioEstadistica
     {
-        //DECLARAMOS UNA INSTANCIA DEL MODELO
+        //DECLARAMOS UNA INSTANCIA DEL MODELO 1233
         CERVECERIA_CLLEntities modelo = new CERVECERIA_CLLEntities();
 
         public List<ProductoEstadistica> RankingProducto(Int16 año, Int16 top)
